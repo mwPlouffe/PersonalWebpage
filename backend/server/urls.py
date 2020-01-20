@@ -3,7 +3,7 @@ from . import views
 from django.urls import include
 
 urlpatterns = [
-    url('Skills/', include('server.skill.urls')),
+    url('Skill/', include('server.skill.urls')),
     url('Education/', include('server.education.urls')),
     url('Project/', include('server.project.urls')),
     url('Work/', include('server.work.urls')),
