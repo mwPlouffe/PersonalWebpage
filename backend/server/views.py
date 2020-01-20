@@ -1,6 +1,7 @@
-from django.http import HttpResponse
-from django.core import serializers
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 
-def index(req):
-    return HttpResponse('Index Page!')
+class DefaultView(viewsets.GenericViewSet):
+    def index(self, req):
+        return Response('Index Page!')

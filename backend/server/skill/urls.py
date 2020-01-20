@@ -1,12 +1,10 @@
-from django.conf.urls import url
+from django.urls import path, include
 from . import views
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'', views.SkillView, '')
 
 urlpatterns = [
-    url('OperatingSystems/', views.operatingSystems, name='operatingSystems'),
-    url('Applications/', views.applications, name='applications'),
-    url('ProgrammingLanguages/', views.programmingLanguages, name='programmingLanguages'),
-    url('Platforms/', views.platforms, name='platforms'),
-    url('Methodologies/', views.methodologies, name='methodologies'),
-    url('Languages/', views.languages, name='languages'),
-    url('Licenses/', views.licenses, name='licenses'),
+    path('', include(router.urls)),
 ]

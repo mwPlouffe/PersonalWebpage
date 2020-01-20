@@ -1,10 +1,12 @@
-from django.http import JsonResponse
 from server.models import Association
-from django.core import serializers
+from server.serializers import AssociationSerializer
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 
-def index(req):
-    data = Association.objects.all()
-    data = serializers.serialize('json', data)
-    print(data)
-    return JsonResponse(data, safe=False)
+class AssociationView(viewsets.ViewSet):
+    def list(self, req):
+        queryset = Association.objects.all()
+        serializer = AssociationSerializer(queryset, many=True)
+        print(serializer.data)
+        return Response(serializer.data)

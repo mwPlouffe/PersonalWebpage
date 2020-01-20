@@ -1,22 +1,16 @@
-from django.http import JsonResponse
+from server.serializers import EducationSerializer
 from server.models import Education, EducationNote
-from django.core import serializers
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 
-def shortEducation(req):
-    data = Education.objects.all()
-    data = serializers.serialize('json', data)
-    print(data)
-    return JsonResponse(data, safe=False)
+class EducationView(viewsets.ModelViewSet):
+    def shortList(self, req):
+        data = Education.objects.all()
+        serializer = EducationSerializer(data, many=True)
+        return Response(serializer.data)
 
 
-def longEducation(req):
-    education = Education.objects.all()
-    data = []
-    for ed in education:
-        notes = EducationNote.objects.filter(education=ed.id)
-        data.append({
-            'education': serializers.serialize('json', [ed]),
-            'notes': serializers.serialize('json', notes)})
-    print(data)
-    return JsonResponse(data, safe=False)
+    def longList(self, req):
+        education = Education.objects.all()
+        serializer = EducationSerializer(data, many=True)

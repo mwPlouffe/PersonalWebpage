@@ -1,13 +1,16 @@
-from django.conf.urls import url
+from django.urls import path, include
 from . import views
-from django.urls import include
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'index', views.DefaultView, 'index')
 
 urlpatterns = [
-    url('Skill/', include('server.skill.urls')),
-    url('Education/', include('server.education.urls')),
-    url('Project/', include('server.project.urls')),
-    url('Work/', include('server.work.urls')),
-    url('Interest/', include('server.interest.urls')),
-    url('Association/', include('server.association.urls')),
-    url('', views.index, name='index'),
+    path('Skill/', include('server.skill.urls')),
+    #url('Education/', include('server.education.urls')),
+    #url('Project/', include('server.project.urls')),
+    #url('Work/', include('server.work.urls')),
+    path('Interest/', include('server.interest.urls')),
+    path('Association/', include('server.association.urls')),
+    path('', views.DefaultView.as_view({'get': 'index'}))
 ]
