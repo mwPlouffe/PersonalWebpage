@@ -1,21 +1,26 @@
 from django.db import models
-from django.db.models.fields import CharField, DurationField, BooleanField
+from django.db.models.fields import CharField, DateField, BooleanField
+from django.utils import timezone
 
 SKILLS_QUALIFICATIONS = [
-    (1, 'Operating Systems'),
-    (2, 'Applications'),
-    (3, 'Programming Languages'),
-    (4, 'Platforms'),
-    (5, 'Methodologies'),
-    (6, 'Languages'),
-    (7, 'Licenses and Certifications')
+    ('Operating Systems', 0),
+    ('Applications', 1),
+    ('Programming Languages', 2),
+    ('Platforms', 3),
+    ('Methodologies', 4),
+    ('Languages', 5),
+    ('Licenses and Certifications', 6)
 ]
 
 INTERESTS = [
-    (1, 'Experience Abroad'),
-    (2, 'Literature'),
-    (3, 'Sports'),
-    (4, 'Passions')
+    ('Experience Abroad', 0),
+    ('Literature', 1),
+    ('Sports', 2),
+    ('Passions', 3)
+]
+TYPES = [
+    ('Association', 0),
+    ('Society', 1)
 ]
 
 
@@ -37,14 +42,11 @@ class Interest(LineItem):
 class Information(models.Model):
     name = CharField(max_length=100, blank=False, null=False)
     city = CharField(max_length=100, blank=False, null=False)
-    time = DurationField(blank=False, null=False)
+    start = DateField(blank=False, null=False, default=timezone.now)
+    end = DateField(blank=False, null=False, default=timezone.now)
 
     class Meta:
         abstract = True
-
-
-class Association(Information):
-    acronym = CharField(blank=False, null=False, max_length=10)
 
 
 class Education(Information):
@@ -58,7 +60,12 @@ class EducationNote(models.Model):
         blank=False,
         null=False
     )
-    item = CharField(max_length=100, blank=False, null=False)
+    item = CharField(max_length=150, blank=False, null=False)
+
+
+class Association(Education):
+    acronym = CharField(blank=False, null=False, max_length=10)
+    type = CharField(blank=False, null=False, choices=TYPES, max_length=11)
 
 
 class Project(Information):
@@ -73,7 +80,7 @@ class ProjectNote(models.Model):
         blank=False,
         null=False
     )
-    item = CharField(max_length=100, blank=False, null=False)
+    item = CharField(max_length=150, blank=False, null=False)
 
 
 class Work(Information):
@@ -88,4 +95,4 @@ class WorkNote(models.Model):
         blank=False,
         null=False
     )
-    item = CharField(max_length=100, blank=False, null=False)
+    item = CharField(max_length=150, blank=False, null=False)
