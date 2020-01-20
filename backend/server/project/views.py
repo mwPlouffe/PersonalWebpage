@@ -1,30 +1,43 @@
 from django.http import JsonResponse
 from server.models import Project, ProjectNote
+from django.core import serializers
 
 
 def shortProject(req):
-    projects = list(Project.objects.filter(personal=False))
-    return JsonResponse(projects, safe=False)
+    data = Project.objects.filter(personal=True)
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def longProject(req):
-    shorts = list(Project.objects.filter(personal=False))
-    projects = []
+    shorts = Project.objects.filter(personal=True)
+    data = []
     for short in shorts:
         notes = ProjectNote.objects.filter(project=short.id)
-        projects.append((short, notes))
-    return JsonResponse(projects, safe=False)
+        data.append({
+            'project': serializers.serialize('json', [short]),
+            'notes': serializers.serialize('json', notes)
+        })
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def shortAcademicProject(req):
-    projects = list(Project.objects.filter(personal=True))
-    return JsonResponse(projects, safe=False)
+    data = Project.objects.filter(personal=False)
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def longAcademicProject(req):
-    shorts = list(Project.objects.filter(personal=True))
-    projects = []
+    shorts = Project.objects.filter(personal=False)
+    data = []
     for short in shorts:
         notes = ProjectNote.objects.filter(project=short.id)
-        projects.append((short, notes))
-    return JsonResponse(projects, safe=False)
+        data.append({
+            'project': serializers.serialize('json', [short]),
+            'notes': serializers.serialize('json', notes)
+        })
+    print(data)
+    return JsonResponse(data, safe=False)

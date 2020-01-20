@@ -1,37 +1,52 @@
 from django.http import JsonResponse
 from server.models import Skill, SKILLS_QUALIFICATIONS
+from django.core import serializers
 
 
 def operatingSystems(req):
-    oses = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[0][1])
-    return JsonResponse(list(oses), safe=False)
+    data = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[0][0])
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def applications(req):
-    apps = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[1][1])
-    return JsonResponse(list(apps), safe=False)
+    data = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[1][0])
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def programmingLanguages(req):
-    langs = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[2][1])
-    return JsonResponse(list(langs), safe=False)
+    data = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[2][0])
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def platforms(req):
-    plats = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[3][1])
-    return JsonResponse(list(plats), safe=False)
+    data = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[3][0])
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def methodologies(req):
-    meths = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[4][1])
-    return JsonResponse(list(meths), safe=False)
+    data = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[4][0])
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def languages(req):
-    langs = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[5][1])
-    return JsonResponse(list(langs), safe=False)
+    data = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[5][0])
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
 
 
 def licenses(req):
-    lics = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[6][1])
-    return JsonResponse(list(lics), safe=False)
+    data = Skill.objects.filter(type=SKILLS_QUALIFICATIONS[6][0])
+    data = serializers.serialize('json', data)
+    print(data)
+    return JsonResponse(data, safe=False)
