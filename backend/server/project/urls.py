@@ -1,9 +1,10 @@
-from django.conf.urls import url
+from django.urls import path, include
 from . import views
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'', views.ProjectView, '')
 
 urlpatterns = [
-    url('Short/', views.shortProject, name='shortProject'),
-    url('Academic/Short/', views.shortAcademicProject, name='shortAcademicProject'),
-    url('Long/', views.longProject, name='LongProject'),
-    url('Academic/Long/', views.longAcademicProject, name='longAcademicProject'),
+    path('', include(router.urls)),
 ]

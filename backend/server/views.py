@@ -3,5 +3,5 @@ from rest_framework.response import Response
 
 
 class DefaultView(viewsets.GenericViewSet):
-    def index(self, req):
+    def list(self, req):
         return Response('Index Page!')

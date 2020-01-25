@@ -1,16 +1,27 @@
-from server.serializers import EducationSerializer
 from server.models import Education, EducationNote
+from server.serializers import EducationSerializer, EducationNoteSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 
 
-class EducationView(viewsets.ModelViewSet):
-    def shortList(self, req):
-        data = Education.objects.all()
-        serializer = EducationSerializer(data, many=True)
-        return Response(serializer.data)
+class EducationView(viewsets.ViewSet):
+    def list(self, req):
+        print(req.GET)
+        short = req.GET.get('short') is not None
 
+        educations = Education.objects.all()
 
-    def longList(self, req):
-        education = Education.objects.all()
-        serializer = EducationSerializer(data, many=True)
+        if short is True:
+            serializer = EducationSerializer(educations, many=True)
+            print(serializer.data)
+            return Response(serializer.data)
+
+        data = []
+        for e in educations:
+            notes = EducationNote.objects.filter(education=e.id)
+            data.append({
+                'education': EducationSerializer(e, many=False).data,
+                'notes': EducationNoteSerializer(notes, many=True).data
+            })
+        print(data)
+        return Response(data)

@@ -46,11 +46,11 @@ class ProjectNoteSerializer(serializers.ModelSerializer):
 
 class WorkSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Project
+        model = Work
         fields = ('id', 'name', 'city', 'start', 'end', 'company', 'volunteer')
 
 
 class WorkNoteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EducationNote
+        model = WorkNote
         fields = ('id', 'work', 'item')

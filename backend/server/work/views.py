@@ -1,43 +1,35 @@
-from django.http import JsonResponse
 from server.models import Work, WorkNote
-from django.core import serializers
+from server.serializers import WorkSerializer, WorkNoteSerializer
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 
-def shortWork(req):
-    data = Work.objects.filter(volunteer=False)
-    data = serializers.serialize('json', data)
-    print(data)
-    return JsonResponse(data, safe=False)
+class WorkView(viewsets.ViewSet):
+    def list(self, req):
+        print(req.GET)
 
+        paid = req.GET.get('paid') is not None
+        volunteer = req.GET.get('volunteer') is not None
+        short = req.GET.get('short') is not None
 
-def longWork(req):
-    work = Work.objects.filter(volunteer=False)
-    data = []
-    for w in work:
-        notes = WorkNote.objects.filter(work=w.id)
-        data.append({
-            'work': serializers.serialize('json', [w]),
-            'notes': serializers.serialize('json', notes)
-        })
-    print(data)
-    return JsonResponse(data, safe=False)
+        if paid and not volunteer:
+            works = Work.objects.filter(volunteer=False)
+        elif volunteer and not paid:
+            works = Work.objects.filter(volunteer=True)
+        else:
+            works = Work.objects.all()
 
+        if short:
+            serializer = WorkSerializer(works, many=True)
+            print(serializer.data)
+            return Response(serializer.data)
 
-def shortVolunteerWork(req):
-    data = Work.objects.filter(volunteer=True)
-    data = serializers.serialize('json', data)
-    print(data)
-    return JsonResponse(data, safe=False)
-
-
-def longVolunteerWork(req):
-    work = Work.objects.filter(volunteer=True)
-    data = []
-    for w in work:
-        notes = WorkNote.objects.filter(work=w.id)
-        data.append({
-            'work': serializers.serialize('json', [w]),
-            'notes': serializers.serialize('json', notes)
-        })
-    print(data)
-    return JsonResponse(data, safe=False)
+        data = []
+        for w in works:
+            notes = WorkNote.objects.filter(work=w.id)
+            data.append({
+                'work': WorkSerializer(w, many=False).data,
+                'notes': WorkNoteSerializer(notes, many=True).data
+            })
+        print(data)
+        return Response(data)
